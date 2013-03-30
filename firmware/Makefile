@@ -1,9 +1,9 @@
 
 CC_WINDOWS_PATH="C:\\HMS800C"
-CC_INSTALL_DIR=$(HOME)/.wine/drive_c/HMS800C
-CC=wine $(CC_INSTALL_DIR)/bin/hms800-cc
-OBJCOPY=wine $(CC_INSTALL_DIR)/bin/hms800-elf-objcopy
-OBJSIZE=wine $(CC_INSTALL_DIR)/bin/hms800-elf-size
+CC=hms800-cc
+OBJCOPY=hms800-elf-objcopy
+
+OBJSIZE=hms800-elf-size
 
 OBJS=lcd.o rda.o spi.o time.o uv3r.o main.o Int.o uart.o ui.o serialCtrl.o
 
