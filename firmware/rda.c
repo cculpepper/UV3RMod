@@ -230,6 +230,7 @@ void rda1846CW(unsigned char* string, unsigned int len)
   
   for(i=0; i<len; i++)
   {
+    msDelay(300);
     unsigned char letter = string[i] - 48; //ASCII 0 == 0
     int d = 0;
     for (d=0; d<5; d++) {
