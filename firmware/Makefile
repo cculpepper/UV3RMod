@@ -5,7 +5,7 @@ OBJCOPY=hms800-elf-objcopy
 
 OBJSIZE=hms800-elf-size
 
-OBJS=lcd.o rda.o spi.o time.o uv3r.o main.o Int.o uart.o ui.o serialCtrl.o
+OBJS=UV3R/lcd.o UV3R/rda.o UV3R/spi.o UV3R/time.o UV3R/radio.o main.o Int.o UV3R/uart.o UV3R/ui.o UV3R/serialCtrl.o
 
 all: uv3r_firmware
 

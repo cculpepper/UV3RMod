@@ -21,14 +21,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA 
  */ 
 
-#include <MC81F8816/MC81F8816.h>
-#include <hms800.h>
-#include "lcd.h"
-#include "time.h"
-#include "uv3r.h"
-#include "uart.h"
-#include "ui.h"
-#include "rda.h"
+#include "UV3R/uv3r.h"
 
 unsigned char selfBias;
 unsigned char	i;
@@ -65,22 +58,6 @@ int main()
   while(1)
   {
     WDTR	= 0x9F; 
-    unsigned char avl  = uartAvailable();
-    radioSettings.ctcss=avl; //TODO temp
-    if (avl > 0)
-      processSerialCommand();
-
-    if (radioSettings.transmitting)
-    {
-      radioSettings.txTime++;
-      if (radioSettings.txTime > 10000)
-      {
-        radioSettings.transmitting = 0;
-        rda1846RX(1);
-        radioSettings.txTime = 0;
-        LCD_BACKLIGHT = 0;
-      }
-    }
 
     radioSettings.rxFreqM = 146;
     radioSettings.rxFreqK = 565;
@@ -94,10 +71,31 @@ int main()
       rda1846CW("K2GXT", 5);
 
       int x = 0;
-      for(x=0; x<2;x++) { //repeat twice
-        msDelay(30000);
+      for(x=0; x<256;x++) { //repeat twice
+        msDelay(78);
+        unsigned char keys = getKeys();
+        if (keys)
+        {
+          switch(keys)
+          {
+            case VOL_KEY:
+              if(isOn) {
+                  lcdClear();
+                  lcdShowStr("FOX", 6);
+                  lcdShowStr("OFF", 0);
+    
+                isOn = 0;
+              } else {
+                lcdClear();
+                lcdShowStr("FOX", 6);
+                lcdShowStr("ON", 0);
+                isOn = 1;
+              }
+              break;
+          } 
+        }
 
-      }
+          }
     } else {
       lcdClear();
       lcdShowStr("FOX", 6);
