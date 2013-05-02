@@ -46,8 +46,8 @@ CODE struct RDAFormat RDAinit[30] = {
  { 0x7F, 0x0000 },
  { 0x30, 0x3006 },
  
- { 0x0A, 0xFFFF },        //PA Bias 0000 0100 '00 00' 0000
-//{ 0x1F, 0x1EB9 },        //GPIO selection 0001 1110 1011 1001
+ { 0x0A, 0x043F},        //PA Bias 0000 0100 '00 00' 0000
+ //{ 0x1F, 0x1EB9 },        //GPIO selection 0001 1110 1011 1001
  { 0x1F, 0x0000 },        //GPIO selection 0001 1110 1011 1001
 
 //GPIO0 css_out
@@ -198,7 +198,7 @@ void rda1846TXDTMF(unsigned char* values, unsigned int len, unsigned short delay
   int i=0;
   //Set tx mode
   SPI(0x1F, 0xC000);
-  SPI(0x63, 0x01F0 ); //00000001 00010001
+  SPI(0x63, 0x01F0); //00000001 00010001
   SPI(0x30, 0x3046); //TX
   
   for(i=0; i<len; i++)
@@ -224,8 +224,10 @@ void rda1846CW(unsigned char* string, unsigned int len)
 {
   int i=0;
   //Set tx mode
+
   SPI(0x1F, 0xC000);
   SPI(0x63, 0x01F0 ); //00000001 00010001
+  SPI( 0x0A, 0x043F);        //PA Bias 0000 0100 '00 00' 0000
   SPI(0x30, 0x3046); //TX
   
   for(i=0; i<len; i++)

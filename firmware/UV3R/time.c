@@ -20,9 +20,8 @@
  */ 
 
 
-
-#include "time.h"
 #include <MC81F8816/MC81F8816.h>
+#include "time.h"
 
 //---------------------------------------------------------------
 //	N ms delay 	by 4MHz crystal 	

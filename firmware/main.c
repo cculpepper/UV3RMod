@@ -25,8 +25,9 @@
 
 unsigned char selfBias;
 unsigned char	i;
-unsigned short isOn;
-
+int first = 0;
+unsigned short isOn = 0;
+void msMeDelay(unsigned short value);
 int main()
 {
   //Pin 31 is R10
@@ -39,11 +40,8 @@ int main()
   initRadioSettings();
 
   LCD_BACKLIGHT = 0;
-  lcdClear();
-  lcdShowStr("K2GXT",6);
-  lcdShowStr("FOX",0);
-  
-  msDelay(1000); //Show startup screen for 1 second
+  power();
+
 
   //Initial RDA settings
   rda1846Init();
@@ -54,9 +52,18 @@ int main()
   uartInit();
 
   isOn = 0;
-
+  first = 0;
   while(1)
   {
+    if(first == 0) {
+      lcdClear();
+      lcdShowStr("K2GXT",6);
+      lcdShowStr("FOX",0);
+  
+      msDelay(1000); //Show startup screen for 1 second
+      first = 1;
+      isOn = 0;
+    }
     WDTR	= 0x9F; 
 
     radioSettings.rxFreqM = 146;
@@ -71,55 +78,37 @@ int main()
       rda1846CW("K2GXT", 5);
 
       int x = 0;
-      for(x=0; x<256;x++) { //repeat twice
-        msDelay(78);
-        unsigned char keys = getKeys();
-        if (keys)
-        {
-          switch(keys)
-          {
-            case VOL_KEY:
-              if(isOn) {
-                  lcdClear();
-                  lcdShowStr("FOX", 6);
-                  lcdShowStr("OFF", 0);
-    
-                isOn = 0;
-              } else {
-                lcdClear();
-                lcdShowStr("FOX", 6);
-                lcdShowStr("ON", 0);
-                isOn = 1;
-              }
-              break;
-          } 
+      for(x=0; x<60;x++) { //256 original
+        msMeDelay(78);
+        if(!isOn) {
+          break;
         }
 
-          }
+      }
     } else {
       lcdClear();
       lcdShowStr("FOX", 6);
       lcdShowStr("OFF", 0);
     }
-
-    
-
-   unsigned char keys = getKeys();
-    if (keys)
-    {
-      switch(keys)
+      unsigned char keys = getKeys();
+      if (keys)
       {
-        case VOL_KEY:
-          if(isOn) {
-            isOn = 0;
-          } else {
-            isOn = 1;
-          }
-          break;
-      } 
-    }
+        switch(keys)
+        {
+          case VOL_KEY:
+            if(isOn) {
+              isOn = 0;
+            } else {
+              isOn = 1;
+            }
+            break;
+          case UV_KEY:
+            power();
+            break;
 
-  
+        } 
+      }
+
     //unsigned char val = readADC(ADC_1); //Read the battery level
   }
 
@@ -127,4 +116,46 @@ int main()
 }
 
 
+//---------------------------------------------------------------
+//  N ms delay  by 4MHz crystal   
+//
+//  (caution!) its only aprox because the loop is not accounted for
+void msMeDelay(unsigned short value)
+{
+   unsigned short i;
+   for(i=0; i<value; i++) 
+   {  
+      delay(1000);
+      WDTR  = 0x9F; //reset the watch dog timer
+      unsigned char keys = getKeys();
+      if (keys)
+      {
+        switch(keys)
+        {
+          case VOL_KEY:
+            if(isOn) {
+              isOn = 0;
+            } else {
+              isOn = 1;
+            }
+            break;
+          case UV_KEY:
+            power();
+            break;
 
+        } 
+      }
+   }
+
+}
+
+
+int power() {
+  lcdClear();
+  lcdInit(255); //Adjust this for LCD contrast
+
+  while(getKeys() != UV_KEY) {
+  }
+  lcdInit(42); //Adjust this for LCD contrast
+  first = 0;
+}
