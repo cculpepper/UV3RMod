@@ -78,7 +78,7 @@ int main()
       rda1846CW("K2GXT", 5);
 
       int x = 0;
-      for(x=0; x<60;x++) { //256 original
+      for(x=0; x<256;x++) { //256 original
         msMeDelay(78);
         if(!isOn) {
           break;
