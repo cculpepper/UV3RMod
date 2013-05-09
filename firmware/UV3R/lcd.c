@@ -96,6 +96,7 @@ CODE unsigned char alphaNumFont[][4] =
 0x01, 0x48, 0xBA, 0x00,   //  Lower: ^  0001 0000 1000 0000 Upper: ^  0000 0000 1011 0000 //TODO
 0x01, 0x00, 0x10, 0x00,   //  Lower: _  0001 0000 0000 0000 Upper: _  0000 0000 0001 0000
 };
+unsigned char battery[4] = {0x80, 0x90, 0xB0, 0xF0};  //Empty, 1 bar, 2 bars, 3 bars
 
 void lcdSetSymbol(unsigned char sym, unsigned char lower)
 {
@@ -109,7 +110,7 @@ void lcdSetSymbol(unsigned char sym, unsigned char lower)
 
 void lcdSetLevel(unsigned char level)
 {
-   
+  SEG27 = battery[level];
 }
 
 void lcdSetFrac(unsigned char frac)
