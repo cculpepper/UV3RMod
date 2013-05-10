@@ -39,7 +39,6 @@ int main()
 
   initRadioSettings();
 
-  LCD_BACKLIGHT = 0;
   power();
 
 
@@ -71,14 +70,15 @@ int main()
       
     updateRDA1846Freq(radioSettings.rxFreqM, radioSettings.rxFreqK);
 
+
     if(isOn) {
-      lcdClear();
-      lcdShowStr("FOX",6);
-      lcdShowStr("ON",0);
+//      lcdClear();
+      lcdShowStr("K2GXT",6);
+      lcdShowStr("ON ",0);
       rda1846CW("K2GXT", 5);
 
       int x = 0;
-      for(x=0; x<256;x++) { //256 original
+      for(x=0; x<60;x++) { //256 original
         msMeDelay(78);
         if(!isOn) {
           break;
@@ -86,8 +86,8 @@ int main()
 
       }
     } else {
-      lcdClear();
-      lcdShowStr("FOX", 6);
+ //     lcdClear();
+      lcdShowStr("K2GXT", 6);
       lcdShowStr("OFF", 0);
     }
       unsigned char keys = getKeys();
@@ -105,11 +105,29 @@ int main()
           case UV_KEY:
             power();
             break;
+          case LR_KEY:
+            R1 = ~R1;
+            break;
 
         } 
       }
+    /*
+      Values are nowhere near perfect #yolo
+      Max: 165
+      Off: 139
+    */
 
-    //unsigned char val = readADC(ADC_1); //Read the battery level
+    unsigned char b = getBatteryLevel();
+    if (b > 157) {
+      lcdSetLevel(3);
+    } else if (b < 144) {
+      lcdSetLevel(0);
+    } else if (b  < 150) {
+      lcdSetLevel(1);
+    } else {
+      lcdSetLevel(2);
+    }
+
   }
 
   return 0;
@@ -142,6 +160,9 @@ void msMeDelay(unsigned short value)
           case UV_KEY:
             power();
             break;
+          case LR_KEY:
+            R1 = ~R1;
+            break;
 
         } 
       }
@@ -153,9 +174,10 @@ void msMeDelay(unsigned short value)
 int power() {
   lcdClear();
   lcdInit(255); //Adjust this for LCD contrast
-
+  R24 = 0;
   while(getKeys() != UV_KEY) {
   }
+  R24 = 1;
   lcdInit(42); //Adjust this for LCD contrast
   first = 0;
 }

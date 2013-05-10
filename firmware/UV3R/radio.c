@@ -25,7 +25,6 @@
 #include "radio.h"
 
 static unsigned char encoderState = 0;
-unsigned char i;
 
 struct RadioSettings radioSettings;
 
@@ -98,13 +97,16 @@ unsigned char readADC(unsigned char ADC_CH)			// 8bit ADC read
   {	if(ADSF) break;			//
   }						//
   return	ADCRL;			// return 8 bit data 
-}							//
+}							
 
+unsigned char getBatteryLevel() {
+  return readADC(ADC_1);
+}
 
 void getSelfBias(void)
 {
 
-  i	= readADC(ADC_BIAS);		// ADC_15 
+  bias = readADC(ADC_BIAS);		// ADC_15 
 
   asm("	ldx	_i				;
       lda	#0CAh				; 3280 

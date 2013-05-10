@@ -125,6 +125,7 @@ CODE struct RadioSettings
 };
 
 extern struct RadioSettings radioSettings;
+unsigned char bias;
 
 #define TRUE 1
 #define FALSE 0
@@ -162,7 +163,7 @@ void initRadioSettings();
 char getDialEncoder(); 
 void initIOPorts();
 unsigned char getKeys(); 
-char getBatteryLevel();
+unsigned char getBatteryLevel();
 unsigned char readADC(unsigned char ADC_CH);			// 8bit ADC read 
 void getSelfBias(void);
 

@@ -164,8 +164,8 @@ void rda1846GetStatus(short* rssi, short* vssi) //, short* dtmf, short* flags)
 
 }
 
-unsigned char getDTMF()
-{
+unsigned short getDTMF()
+{ 
   return 0;
 }
 
@@ -224,10 +224,9 @@ void rda1846CW(unsigned char* string, unsigned int len)
 {
   int i=0;
   //Set tx mode
-
-  SPI(0x1F, 0x9BB9);  //Should turn on amp
-  SPI(0x63, 0x01F0 ); //00000001 00010001
-  SPI( 0x0A, 0x043F);        //PA Bias 0000 0100 '00 00' 0000
+  SPI(0x1F, 0x9BB9);  //Turn on amp
+  SPI(0x63, 0x01F0 ); //00000001 00010001 
+  SPI( 0x0A, 0x043F);        //Max power
   SPI(0x30, 0x3046); //TX
   
   for(i=0; i<len; i++)
