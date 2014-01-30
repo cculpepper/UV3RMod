@@ -24,5 +24,5 @@ flash: uv3r_firmware
 	../programmer/uv3rFlash.py -d -a uv3r_firmware.hex
 
 clean:
-	rm uv3r_firmware.hex *.o *.lst
+	rm uv3r_firmware.hex *.o *.lst UV3R/*.o UV3R/*.lst
 

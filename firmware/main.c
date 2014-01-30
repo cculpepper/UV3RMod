@@ -26,7 +26,8 @@
 unsigned char selfBias;
 unsigned char	i;
 int first = 0;
-unsigned short isOn = 0;
+short powerLevels[8] = {0x0400, 0x0401, 0x0402, 0x0404, 0x0408, 0x0410, 0x0420, 0x043F};
+unsigned short isOn = 0; 
 void msMeDelay(unsigned short value);
 int main()
 {
@@ -52,6 +53,7 @@ int main()
 
   isOn = 0;
   first = 0;
+  int powa = 0;
   while(1)
   {
     if(first == 0) {
@@ -69,7 +71,8 @@ int main()
     radioSettings.rxFreqK = 565;
       
     updateRDA1846Freq(radioSettings.rxFreqM, radioSettings.rxFreqK);
-
+    //lcdClear();
+  
 
     if(isOn) {
 //      lcdClear();
@@ -78,8 +81,8 @@ int main()
       rda1846CW("K2GXT", 5);
 
       int x = 0;
-      for(x=0; x<60;x++) { //256 original
-        msMeDelay(78);
+      for(x=0; x<450;x++) { //256 original d
+        msMeDelay(100);
         if(!isOn) {
           break;
         }
@@ -108,6 +111,11 @@ int main()
           case LR_KEY:
             R1 = ~R1;
             break;
+          case MENU_KEY:
+            SPI(0x0A, powerLevels[powa % 8]);
+            lcdSmallNumber((unsigned char)(powa % 8));
+            powa++;
+
 
         } 
       }

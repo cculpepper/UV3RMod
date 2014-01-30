@@ -47,8 +47,8 @@ CODE struct RDAFormat RDAinit[30] = {
  { 0x30, 0x3006 },
  
  { 0x0A, 0x043F},        //PA Bias 0000 0100 '00 00' 0000
- //{ 0x1F, 0x1EB9 },        //GPIO selection 0001 1110 1011 1001
- { 0x1F, 0x0000 },        //GPIO selection 0001 1110 1011 1001
+ { 0x1F, 0x1EB9 },        //GPIO selection 0001 1110 1011 1001
+ //{ 0x1F, 0x0000 },        //GPIO selection 0001 1110 1011 1001
 
 //GPIO0 css_out
 //GPIO1 off VFM
@@ -166,7 +166,7 @@ void rda1846GetStatus(short* rssi, short* vssi) //, short* dtmf, short* flags)
 
 unsigned short getDTMF()
 { 
-  return 0;
+  return SPI(0x6C | 0x80, 0x0000);
 }
 
 //GPIO0 css_out
@@ -231,17 +231,17 @@ void rda1846CW(unsigned char* string, unsigned int len)
   
   for(i=0; i<len; i++)
   {
-    msDelay(300);
+    msDelay(315);
     unsigned char letter = string[i] - 48; //ASCII 0 == 0
     int d = 0;
     for (d=0; d<5; d++) {
       if(cwTable[letter][d] != 0) {
         SPI(0x35, cwTone); 
         SPI(0x36, 0); 
-        msDelay(100 * cwTable[letter][d]);
+        msDelay(115 * cwTable[letter][d]);
         SPI(0x35, 0); 
         SPI(0x36, 0); 
-        msDelay(50);
+        msDelay(65);
       
         
       }

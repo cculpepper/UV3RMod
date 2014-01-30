@@ -1,3 +1,28 @@
+UV-3R Fox
+=========
+
+This firmware (based on the UV3RMod that this project forks) turns the UV-3R into a fox.
+
+By default, this firmware will transmit K2GXT (the Rochester Institute of Technology Amateur Radio Club callsign) every ~30 seconds on 146.565 MHz.  If you choose to use this firmware for your own purposes, you *MUST CHANGE THE CALLSIGN TO YOUR OWN*!!! You can do this in firmware/main.c line 78, you also have to change the second argument to the length of your callsign.
+
+The UV button will turn the radio on/off.
+The VOL button will toggle transmitting.
+The MENU button will change the output power.  The ranges are from ~100mW to ~3W.
+
+This firmware is experimental and is to be run at YOUR OWN RISK.
+
+
+If you have any questions you can contact me at mjs7769@rit.edu.
+
+
+
+
+
+
+
+Below is the original README file for the UV3RMod Repo.
+
+
 UV3RMod
 =======
 

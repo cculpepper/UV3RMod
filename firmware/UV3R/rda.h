@@ -31,7 +31,7 @@ struct RDAFormat {
 void rda1846Init();
 
 void rda1846GetStatus(short* rssi, short* vssi); //, short* dtmf, short* flags);
-unsigned short rda1846GetDTMF();
+unsigned short getDTMF();
 void rda1846TXDTMF(unsigned char* values, unsigned int len, unsigned short delay);
 void rda1846SetFreq(unsigned short freqU, unsigned short freqL);
 void rda1846TX();
